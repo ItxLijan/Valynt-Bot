@@ -1,0 +1,53 @@
+version: '3.9'
+
+services:
+  bot:
+    build: .
+    container_name: valynt-bot
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+      - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
+      - DATABASE_URL=${DATABASE_URL}
+      - DASHBOARD_PORT=3000
+      - DASHBOARD_URL=${DASHBOARD_URL}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - OAUTH2_REDIRECT_URI=${OAUTH2_REDIRECT_URI}
+      - NODE_ENV=production
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - botnet
+
+  mariadb:
+    image: mariadb:11
+    container_name: valynt-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=core
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - botnet
+
+volumes:
+  mariadb_data:
+
+networks:
+  botnet:
+    driver: bridge

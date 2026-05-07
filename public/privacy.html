@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Datenschutzerklärung | Valynt</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%235865f2'/><text y='.9em' font-size='72' x='14'>⚡</text></svg>"/>
+<style>
+:root[data-theme="dark"]{--bg:#1c1c1e;--bg2:#2c2c2e;--border:rgba(255,255,255,.1);--text:#f5f5f7;--text2:#98989d;--accent:#5865f2;}
+:root[data-theme="light"]{--bg:#f2f2f7;--bg2:#fff;--border:rgba(0,0,0,.08);--text:#1c1c1e;--text2:#636366;--accent:#5865f2;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px;}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--accent);text-decoration:none;font-size:14px;font-weight:600;margin-bottom:32px;}
+h1{font-size:28px;font-weight:700;margin-bottom:6px;}
+.sub{font-size:13px;color:var(--text2);margin-bottom:36px;}
+h2{font-size:17px;font-weight:700;margin:28px 0 10px;padding-top:8px;border-top:1px solid var(--border);}
+p,li{font-size:14px;color:var(--text2);margin-bottom:8px;}
+ul{padding-left:20px;}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:20px;}
+</style>
+<script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+</head>
+<body>
+<div class="wrap">
+  <a href="/" class="back">← Zurück zum Dashboard</a>
+  <h1>🔒 Datenschutzerklärung</h1>
+  <p class="sub">Zuletzt aktualisiert: April 2026</p>
+
+  <div class="card">
+    <h2>1. Verantwortlicher</h2>
+    <p>Dieser Discord-Bot wird betrieben von <strong>Valynt</strong>. Bei Fragen zum Datenschutz wende dich bitte an den Server-Administrator.</p>
+  </div>
+
+  <div class="card">
+    <h2>2. Welche Daten werden gespeichert?</h2>
+    <p>Der Bot speichert folgende Daten in einer MariaDB-Datenbank:</p>
+    <ul>
+      <li>Discord User-ID und Server-ID (zur Identifizierung)</li>
+      <li>XP-Punkte, Level und Coins (für das Progression-System)</li>
+      <li>Geburtstag (nur wenn vom Nutzer eingetragen, Format MM-DD)</li>
+      <li>Minecraft-Username und -Version (nur wenn vom Nutzer eingetragen)</li>
+      <li>Daily-Streak-Daten (Datum der letzten Abholung, Streak-Anzahl)</li>
+      <li>Shop-Käufe (User-ID, gekauftes Item, Lieferstatus)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>3. Zweck der Datenspeicherung</h2>
+    <p>Die Daten werden ausschließlich für den Betrieb des Discord-Bots verwendet:</p>
+    <ul>
+      <li>Verwaltung von Rangsystemen und Leaderboards</li>
+      <li>Verarbeitung von Shop-Käufen</li>
+      <li>Geburtstagserinnerungen</li>
+      <li>Tägliche Belohnungen (Streak-System)</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>4. Datenweitergabe</h2>
+    <p>Deine Daten werden nicht an Dritte weitergegeben. Alle Daten verbleiben auf dem Server des Bot-Betreibers.</p>
+  </div>
+
+  <div class="card">
+    <h2>5. Datenlöschung</h2>
+    <p>Du kannst jederzeit die Löschung deiner Daten beantragen. Wende dich dafür an einen Server-Administrator. Wenn du den Server verlässt, werden deine Daten nicht automatisch gelöscht.</p>
+  </div>
+
+  <div class="card">
+    <h2>6. Dashboard-Login</h2>
+    <p>Für das Web-Dashboard wird Discord OAuth2 genutzt. Dabei werden folgende Daten temporär gespeichert:</p>
+    <ul>
+      <li>Discord User-ID und Username (für die Anzeige)</li>
+      <li>Avatar-URL</li>
+      <li>Liste der verwalteten Server</li>
+    </ul>
+    <p>Diese Session-Daten werden nach 7 Tagen automatisch gelöscht.</p>
+  </div>
+
+  <div class="card">
+    <h2>7. Cookies</h2>
+    <p>Das Dashboard verwendet ein Session-Cookie (<code>connect.sid</code>) um die Anmeldung zu speichern. Dieses Cookie ist technisch notwendig für den Betrieb des Dashboards und enthält keine persönlichen Daten.</p>
+  </div>
+</div>
+</body>
+</html>

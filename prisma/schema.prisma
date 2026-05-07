@@ -1,0 +1,224 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl", "linux-musl-openssl-3.0.x"]
+}
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model GuildConfig {
+  id                     String   @id @default(cuid())
+  guildId                String   @unique
+  mainChannel            String?
+  logChannel             String?
+  logIgnoreChannels      String   @default("[]") @db.Text
+  welcomeChannel         String?
+  welcomeTitle           String?  @db.Text
+  welcomeMessage         String?  @db.Text
+  welcomeShowAvatar      Boolean  @default(true)
+  autoRoles              String   @default("[]") @db.Text
+  xpPerMessage           Int      @default(10)
+  xpPerVoiceMinute       Int      @default(5)
+  xpBlacklistChannels    String   @default("[]") @db.Text
+  xpLeaderboardChannel   String?
+  levelUpChannel         String?
+  xpLogChannel           String?
+  coinsPerMessage        Int      @default(5)
+  coinsPerVoiceMinute    Int      @default(2)
+  coinLeaderboardChannel String?
+  coinBlacklistChannels  String   @default("[]") @db.Text
+  shopChannel            String?
+  birthdayChannel        String?
+  countingChannel        String?
+  countingCurrent        Int      @default(0)
+  countingLastUserId     String?
+  quizChannel            String?
+  quizMessageId          String?
+  imageOnlyChannels      String   @default("[]") @db.Text
+  absenceChannel         String?
+  teamRankChannel        String?
+  giveawayChannel        String?
+  // Stream notifications
+  streamNotifyChannel    String?
+  streamNotifyTwitch     String   @default("[]") @db.Text
+  streamNotifyYoutube    String   @default("[]") @db.Text
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model UserData {
+  id         String   @id @default(cuid())
+  userId     String
+  guildId    String
+  xp         Int      @default(0)
+  level      Int      @default(0)
+  coins      Int      @default(0)
+  mcUsername String?
+  mcVersion  String?
+  birthday   String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  @@unique([userId, guildId])
+}
+
+model ShopItem {
+  id          String   @id @default(cuid())
+  guildId     String
+  name        String
+  description String
+  price       Int
+  emoji       String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ShopPurchase {
+  id        String   @id @default(cuid())
+  guildId   String
+  userId    String
+  itemId    String
+  itemName  String
+  delivered Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model QuizQuestion {
+  id         String   @id @default(cuid())
+  guildId    String
+  emoji      String
+  answer     String
+  hint       String?
+  xpReward   Int      @default(20)
+  coinReward Int      @default(10)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model ActiveQuiz {
+  id         String   @id @default(cuid())
+  guildId    String   @unique
+  questionId String
+  messageId  String?
+  hintsUsed  Int      @default(0)
+  startedAt  DateTime @default(now())
+}
+
+model DashboardUser {
+  id           String   @id @default(cuid())
+  discordId    String   @unique
+  username     String
+  avatar       String?
+  accessToken  String?
+  refreshToken String?
+  guilds       String   @default("[]")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model VoiceSession {
+  id        String   @id @default(cuid())
+  userId    String
+  guildId   String
+  channelId String
+  joinedAt  DateTime @default(now())
+  @@unique([userId, guildId])
+}
+
+model Giveaway {
+  id             String   @id @default(cuid())
+  guildId        String
+  channelId      String
+  messageId      String?
+  prize          String
+  description    String?
+  winnerCount    Int      @default(1)
+  endsAt         DateTime
+  ended          Boolean  @default(false)
+  requiredRoles  String   @default("[]")
+  blacklistRoles String   @default("[]")
+  participants   String   @default("[]")
+  winners        String   @default("[]")
+  createdBy      String
+  createdAt      DateTime @default(now())
+}
+
+model TicketPanel {
+  id          String           @id @default(cuid())
+  guildId     String
+  channelId   String
+  messageId   String?
+  title       String           @default("Support Tickets")
+  description String           @default("Wähle eine Kategorie aus um ein Ticket zu öffnen.")
+  color       String           @default("#5865f2")
+  categories  TicketCategory[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model TicketCategory {
+  id                 String          @id @default(cuid())
+  panelId            String
+  panel              TicketPanel     @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  guildId            String
+  label              String
+  emoji              String?
+  description        String?
+  categoryId         String?
+  supportRoles       String          @default("[]")
+  channelNamePattern String          @default("{username}-{id}")
+  questions          TicketQuestion[]
+  tickets            Ticket[]
+  createdAt          DateTime        @default(now())
+}
+
+model TicketQuestion {
+  id          String         @id @default(cuid())
+  categoryId  String
+  category    TicketCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  label       String
+  placeholder String?
+  required    Boolean        @default(true)
+  order       Int            @default(0)
+}
+
+model Ticket {
+  id           String         @id @default(cuid())
+  guildId      String
+  channelId    String         @unique
+  userId       String
+  categoryId   String
+  category     TicketCategory @relation(fields: [categoryId], references: [id])
+  answers      String         @default("[]")
+  status       String         @default("open")
+  claimedBy    String?
+  ticketNumber Int
+  createdAt    DateTime       @default(now())
+  closedAt     DateTime?
+}
+// already exists – just verifying fields are complete
+
+model UserStreak {
+  id           String   @id @default(cuid())
+  userId       String
+  guildId      String
+  streak       Int      @default(0)
+  lastClaim    DateTime?
+  totalClaims  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, guildId])
+}
+
+model GuildStreakConfig {
+  id            String   @id @default(cuid())
+  guildId       String   @unique
+  xpBase        Int      @default(50)
+  coinsBase     Int      @default(25)
+  maxMultiplier Int      @default(7)
+  channelId     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
