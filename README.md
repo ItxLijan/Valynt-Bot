@@ -44,7 +44,7 @@ Das Hosting von VALYNT | Core ist dank Docker extrem simpel gehalten.
 
 **1. Repository klonen**
 ```bash
-git clone https://github.com/ItxLijan/Valynt-Bot.git
+git clone https://github.com/ItxLijan/Valynt-Core.git
 cd valynt-core
 ```
 
